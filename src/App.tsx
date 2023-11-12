@@ -77,23 +77,11 @@ export const App = () => {
 
   const isCurrentPhaseCompleted = (phaseId: number) => {
     const phaseIndex = phases.findIndex((phase) => phase.id === phaseId);
-
-    if (phaseIndex === -1) {
-      return false;
-    }
-
+    if (phaseIndex === -1) return false;
     const isCurrentPhaseComplete = phases[phaseIndex].completed;
-
-    // if (!isCurrentPhaseComplete) {
-    //   phases.slice(phaseIndex).forEach((phase) => {
-    //     phase.completed = false;
-    //     phase.todos.forEach((todo) => {
-    //       todo.completed = false;
-    //     });
-    //   });
-    // }
     return isCurrentPhaseComplete;
   };
+
   return (
     <div className="container mx-auto">
       <h1 className="text-6xl text-center p-4">Startup's Todo</h1>
@@ -126,6 +114,7 @@ export const App = () => {
               </div>
             )}
           </div>
+          {JSON.stringify(phases, null, 4)}
           {phases.map((phase, index) => (
             <div key={phase.id} className="flex flex-col gap-2">
               <h2 className="text-3xl">
@@ -133,7 +122,6 @@ export const App = () => {
                 {isCurrentPhaseCompleted(phase.id) ? "✅" : ""}
               </h2>
               <div className="flex flex-col gap-2">
-                {JSON.stringify(phase)}
                 {phase.todos.map((todo) => (
                   <div key={todo.id} className="flex items-center gap-2">
                     <p className="text-xl">
