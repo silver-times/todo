@@ -60,26 +60,24 @@ export const App = () => {
     setPhases(newPhases);
   };
 
-  const isCurrentPhaseEnabled = (index: number) => {
-    if (index === 0) {
-      return true;
-    }
-
-    for (let i = 0; i < index; i++) {
-      const previousPhase = phases[i];
-      if (!previousPhase.todos.every((todo) => todo.completed)) {
-        return false;
-      }
-    }
-
-    return true;
-  };
-
   const isCurrentPhaseCompleted = (phaseId: number) => {
     const phaseIndex = phases.findIndex((phase) => phase.id === phaseId);
     if (phaseIndex === -1) return false;
     const isCurrentPhaseComplete = phases[phaseIndex].completed;
     return isCurrentPhaseComplete;
+  };
+
+  const isCurrentPhaseEnabled = (index: number) => {
+    if (index === 0) return true;
+
+    for (let i = 0; i < index; i++) {
+      const previousPhase = phases[i];
+      if (!previousPhase.completed) {
+        return false;
+      }
+    }
+
+    return true;
   };
 
   return (
@@ -127,7 +125,7 @@ export const App = () => {
                     <p className="text-xl">
                       <input
                         type="checkbox"
-                        // disabled={!isCurrentPhaseEnabled(index)}
+                        disabled={!isCurrentPhaseEnabled(index)}
                         checked={todo.completed}
                         className="mr-4 h-6 w-6 cursor-pointer"
                         onChange={() => handleTodoToggle(phase.id, todo.id)}
