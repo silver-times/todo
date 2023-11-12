@@ -149,7 +149,7 @@ export const App = () => {
                     required
                     type="text"
                     value={todoInput}
-                    placeholder="Enter todo!"
+                    placeholder="Enter task..."
                     className="px-4 py-2 border border-sky-600"
                     onChange={(e) => setTodoInput(e.target.value)}
                   />
@@ -157,7 +157,7 @@ export const App = () => {
                     type="submit"
                     className="border border-sky-600 bg-sky-600 text-white px-4 py-2 ml-2"
                   >
-                    Add Todo
+                    Add Task
                   </button>
                 </form>
               </div>
