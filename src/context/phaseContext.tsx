@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
-import type { TodoType, PhaseType } from "../types";
+import type { PhaseType } from "../types";
 
 type PhaseContextType = {
   phases: PhaseType[];

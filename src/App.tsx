@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { TodoType, PhaseType } from "./types";
+import { savePhasesToLocalStorage, loadPhasesFromLocalStorage } from "./utils";
 
 export const App = () => {
   const [showInput, setShowInput] = useState<boolean>(false);
@@ -85,6 +86,17 @@ export const App = () => {
     return true;
   };
 
+  useEffect(() => {
+    const localPhases = loadPhasesFromLocalStorage();
+    if (localPhases) {
+      setPhases(localPhases);
+    }
+  }, []);
+
+  useEffect(() => {
+    savePhasesToLocalStorage(phases);
+  }, [phases]);
+
   return (
     <div className="container mx-auto">
       <h1 className="text-6xl text-center p-4">Startup's Todo</h1>
@@ -117,7 +129,6 @@ export const App = () => {
               </div>
             )}
           </div>
-          {JSON.stringify(completedPhases, null, 4)}
           {phases.map((phase, index) => (
             <div key={phase.id} className="flex flex-col gap-2">
               <h2 className="text-3xl">
