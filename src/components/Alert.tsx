@@ -18,7 +18,7 @@ export const Alert = (props: AlertProps) => {
         </div>
         <div>
           <p className="font-bold text-xl">Random fact</p>
-          <p className="text-sm ">{props.funfact}</p>
+          <p className="text-md">{props.funfact}</p>
         </div>
       </div>
     </div>

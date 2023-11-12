@@ -54,6 +54,7 @@ export const App = () => {
                 <div className="flex gap-4">
                   <form onSubmit={handlePhaseInput}>
                     <input
+                      required
                       type="text"
                       value={phaseInput}
                       onChange={(e) => setPhaseInput(e.target.value)}
@@ -90,7 +91,7 @@ export const App = () => {
                       src={DeleteIcon}
                       alt="add-todo-icon"
                     />
-                    <p className="text-lg hover:text-2xl">Delete Progress</p>
+                    <p className="text-lg hover:text-2xl">Clear Progress</p>
                   </div>
                 </div>
               )}
@@ -133,6 +134,7 @@ export const App = () => {
                 </div>
                 <form onSubmit={(e) => handleTodoInput(e, phase.id)}>
                   <input
+                    required
                     type="text"
                     value={todoInput}
                     placeholder="Enter todo!"

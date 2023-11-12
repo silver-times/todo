@@ -103,9 +103,7 @@ export const PhaseContextProvider: React.FC<ChildrenProps> = ({ children }) => {
   };
 
   const displayFact = async () => {
-    const response = await fetch(
-      "https://uselessfacts.jsph.pl/random.json?language=en"
-    );
+    const response = await fetch("https://uselessfacts.jsph.pl/random.json");
     const data = await response.json();
     setFunfact(data.text);
   };
