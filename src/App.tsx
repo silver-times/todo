@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { usePhaseContext } from "./context/phaseContext";
+import AddTodoIcon from "./assets/addTodoIcon.svg";
+import CheckIcon from "./assets/checkIcon.svg";
+import DeleteIcon from "./assets/deleteIcon.svg";
 
 export const App = () => {
   const [showInput, setShowInput] = useState<boolean>(false);
@@ -37,77 +40,113 @@ export const App = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      <h1 className="text-6xl text-center p-4">Startup's Todo</h1>
-      <div className="flex justify-center items-center px-16 my-8 gap-20">
-        <div className="w-full bg-green-900 flex flex-col items-center justify-center gap-y-5 p-5">
-          <div className="flex">
-            <button
-              onClick={() => setShowInput(!showInput)}
-              className="text-4xl bg-green-900"
-            >
-              ✏️
-            </button>
-            {showInput && (
-              <div className="flex gap-4">
-                <form onSubmit={handlePhaseInput}>
+    <div className="w-screen h-screen">
+      <div className="container mx-auto mt-16 flex flex-col justify-center items-center w-[50%] rounded-lg shadow-lg bg-white ">
+        <div className="  w-[50%]">
+          <h1 className="text-3xl text-center my-4 font-extrabold">
+            My startup's progress
+          </h1>
+          <div className="flex flex-col items-center justify-center gap-y-5 p-5 ">
+            <div className="flex">
+              {showInput ? (
+                <div className="flex gap-4">
+                  <form onSubmit={handlePhaseInput}>
+                    <input
+                      type="text"
+                      value={phaseInput}
+                      onChange={(e) => setPhaseInput(e.target.value)}
+                      placeholder="Enter phase!"
+                      className="px-4 py-2 border border-sky-600"
+                    />
+                    <button
+                      type="submit"
+                      className="border border-sky-600 bg-sky-600 text-white px-4 py-2 ml-2"
+                    >
+                      Add Phase
+                    </button>
+                  </form>
+                </div>
+              ) : (
+                <div className="flex gap-8">
+                  <div
+                    onClick={() => setShowInput(true)}
+                    className="flex items-center justify-center gap-2 cursor-pointer transition duration-300 ease-out hover:scale-95 hover:ease-in"
+                  >
+                    <img
+                      className="h-8 w-8"
+                      src={AddTodoIcon}
+                      alt="add-todo-icon"
+                    />
+                    <p className="text-lg hover:text-2xl">Add Phase</p>
+                  </div>
+                  <div
+                    onClick={() => localStorage.clear()}
+                    className="flex items-center justify-center gap-2 cursor-pointer transition duration-300 ease-out hover:scale-95 hover:ease-in"
+                  >
+                    <img
+                      className="h-8 w-8"
+                      src={DeleteIcon}
+                      alt="add-todo-icon"
+                    />
+                    <p className="text-lg hover:text-2xl">Delete Progress</p>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {phases.map((phase, index) => (
+              <div key={phase.id} className="flex flex-col gap-2 py-4">
+                <div className="flex items-center justify-start gap-4">
+                  <h2 className="text-2xl bg-black text-white rounded-full w-12 h-12 flex items-center justify-center">
+                    {index + 1}
+                  </h2>
+                  <h2 className="text-2xl">{phase.name}</h2>
+                  <h2 className="text-3xl">
+                    {completedPhases.includes(phase.id) ? (
+                      <img
+                        className="h-12 w-12"
+                        src={CheckIcon}
+                        alt="add-todo-icon"
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </h2>
+                </div>
+                <div className="flex flex-col gap-2 p-4">
+                  {phase.todos.map((todo) => (
+                    <div key={todo.id} className="flex items-center gap-2">
+                      <p className="text-xl">
+                        <input
+                          type="checkbox"
+                          disabled={!isCurrentPhaseEnabled(index)}
+                          checked={todo.completed}
+                          className="mr-4 h-6 w-6 cursor-pointer"
+                          onChange={() => handleTodoToggle(phase.id, todo.id)}
+                        />
+                        {todo.text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <form onSubmit={(e) => handleTodoInput(e, phase.id)}>
                   <input
                     type="text"
-                    value={phaseInput}
-                    onChange={(e) => setPhaseInput(e.target.value)}
-                    placeholder="Enter phase!"
-                    className="px-4 py-2 border border-teal-100"
+                    value={todoInput}
+                    placeholder="Enter todo!"
+                    className="px-4 py-2 border border-sky-600"
+                    onChange={(e) => setTodoInput(e.target.value)}
                   />
                   <button
                     type="submit"
-                    className="border border-teal-100 px-4 py-2 ml-2"
+                    className="border border-sky-600 bg-sky-600 text-white px-4 py-2 ml-2"
                   >
-                    Add Phase
+                    Add Todo
                   </button>
                 </form>
               </div>
-            )}
+            ))}
           </div>
-
-          {phases.map((phase, index) => (
-            <div key={phase.id} className="flex flex-col gap-2">
-              <h2 className="text-3xl">
-                #{index + 1}: {phase.name}{" "}
-                {completedPhases.includes(phase.id) ? "✅" : ""}
-              </h2>
-              <div className="flex flex-col gap-2">
-                {phase.todos.map((todo) => (
-                  <div key={todo.id} className="flex items-center gap-2">
-                    <p className="text-xl">
-                      <input
-                        type="checkbox"
-                        disabled={!isCurrentPhaseEnabled(index)}
-                        checked={todo.completed}
-                        className="mr-4 h-6 w-6 cursor-pointer"
-                        onChange={() => handleTodoToggle(phase.id, todo.id)}
-                      />
-                      {todo.text}
-                    </p>
-                  </div>
-                ))}
-              </div>
-              <form onSubmit={(e) => handleTodoInput(e, phase.id)}>
-                <input
-                  type="text"
-                  value={todoInput}
-                  placeholder="Enter todo!"
-                  className="px-4 py-2 border border-teal-100"
-                  onChange={(e) => setTodoInput(e.target.value)}
-                />
-                <button
-                  type="submit"
-                  className="border border-teal-100 px-4 py-2 ml-2"
-                >
-                  Add Todo
-                </button>
-              </form>
-            </div>
-          ))}
         </div>
       </div>
     </div>
