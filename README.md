@@ -5,5 +5,5 @@
 Simply clone it and run the following command:
 
 ```bash
-  pnpm i && pnpm run dev
+  cd todo && pnpm i && pnpm run dev
 ```
