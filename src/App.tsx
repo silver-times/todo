@@ -43,9 +43,9 @@ export const App = () => {
 
   return (
     <div className="w-screen h-screen">
-      <div className="container mx-auto mt-16 flex flex-col justify-center items-center w-[50%] rounded-lg shadow-lg bg-white ">
+      {funfact && <Alert funfact={funfact} />}
+      <div className="container mx-auto mt-16 flex flex-col justify-center items-center w-[50%] rounded-lg shadow-2xl bg-white ">
         <div className="w-full">
-          {funfact && <Alert funfact={funfact} />}
           <h1 className="text-4xl text-center my-4 font-extrabold">
             My startup's progress
           </h1>

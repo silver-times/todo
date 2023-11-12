@@ -12,8 +12,7 @@ html {
 }
 
 body {
-  /* background-color: #eaf8ff; */
-  background-color: #2f2d2d;
+  background: linear-gradient(135deg, #3498db, #f1c40f);
   font-family: "Raleway", sans-serif;
   color: black;
 }

@@ -3,13 +3,13 @@ import type { AlertProps } from "../types";
 export const Alert = (props: AlertProps) => {
   return (
     <div
-      className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md"
+      className="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 p-8 shadow-md"
       role="alert"
     >
       <div className="flex">
         <div className="py-1">
           <svg
-            className="fill-current h-6 w-6 text-teal-500 mr-4"
+            className="fill-current h-10 w-10 text-teal-500 mr-4"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
           >
@@ -17,8 +17,8 @@ export const Alert = (props: AlertProps) => {
           </svg>
         </div>
         <div>
-          <p className="font-bold text-xl">Random fact</p>
-          <p className="text-md">{props.funfact}</p>
+          <p className="font-bold text-2xl">Random fact</p>
+          <p className="text-lg">{props.funfact}</p>
         </div>
       </div>
     </div>
