@@ -53,18 +53,23 @@ export const App = () => {
     newPhases[phaseIndex].completed = newPhases[phaseIndex].todos.every(
       (todo) => todo.completed
     );
+
     if (newPhases[phaseIndex].completed) {
-      setCompletedPhases((prev) => [...prev, phaseId]);
+      if (!completedPhases.includes(phaseId)) {
+        setCompletedPhases((prev) => [...prev, phaseId]);
+      }
+    } else {
+      const phaseIndexInCompleted = completedPhases.indexOf(phaseId);
+      if (phaseIndexInCompleted !== -1) {
+        const updatedCompletedPhases = completedPhases.slice(
+          0,
+          phaseIndexInCompleted
+        );
+        setCompletedPhases(updatedCompletedPhases);
+      }
     }
 
     setPhases(newPhases);
-  };
-
-  const isCurrentPhaseCompleted = (phaseId: number) => {
-    const phaseIndex = phases.findIndex((phase) => phase.id === phaseId);
-    if (phaseIndex === -1) return false;
-    const isCurrentPhaseComplete = phases[phaseIndex].completed;
-    return isCurrentPhaseComplete;
   };
 
   const isCurrentPhaseEnabled = (index: number) => {
@@ -112,12 +117,12 @@ export const App = () => {
               </div>
             )}
           </div>
-          {JSON.stringify(phases, null, 4)}
+          {JSON.stringify(completedPhases, null, 4)}
           {phases.map((phase, index) => (
             <div key={phase.id} className="flex flex-col gap-2">
               <h2 className="text-3xl">
                 #{index + 1}: {phase.name}{" "}
-                {isCurrentPhaseCompleted(phase.id) ? "✅" : ""}
+                {completedPhases.includes(phase.id) ? "✅" : ""}
               </h2>
               <div className="flex flex-col gap-2">
                 {phase.todos.map((todo) => (
