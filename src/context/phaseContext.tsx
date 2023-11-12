@@ -53,6 +53,7 @@ export const PhaseContextProvider: React.FC<ChildrenProps> = ({ children }) => {
     const newPhases = [...phases];
     newPhases[phaseIndex].todos.push(newTodo);
     setPhases(newPhases);
+    updateLocalStorage(newPhases);
   };
 
   const toggleTodo = (phaseId: number, todoId: number) => {
@@ -88,6 +89,11 @@ export const PhaseContextProvider: React.FC<ChildrenProps> = ({ children }) => {
     }
 
     setPhases(newPhases);
+    updateLocalStorage(newPhases);
+  };
+
+  const updateLocalStorage = (phases: PhaseType[]) => {
+    localStorage.setItem("phases", JSON.stringify(phases));
   };
 
   useEffect(() => {
@@ -114,7 +120,6 @@ export const PhaseContextProvider: React.FC<ChildrenProps> = ({ children }) => {
   );
 };
 
-// Create a custom hook for using the App context
 export const usePhaseContext = () => {
   const context = useContext(PhaseContext);
   if (context === undefined) {
