@@ -3,6 +3,7 @@ import { usePhaseContext } from "./context/phaseContext";
 import AddTodoIcon from "./assets/addTodoIcon.svg";
 import CheckIcon from "./assets/checkIcon.svg";
 import DeleteIcon from "./assets/deleteIcon.svg";
+import GithubIcon from "./assets/githubIcon.svg";
 import { Alert } from "./components/Alert";
 
 export const App = () => {
@@ -45,9 +46,20 @@ export const App = () => {
       <div className="container mx-auto mt-16 flex flex-col justify-center items-center w-[50%] rounded-lg shadow-lg bg-white ">
         <div className="w-full">
           {funfact && <Alert funfact={funfact} />}
-          <h1 className="text-3xl text-center my-4 font-extrabold">
+          <h1 className="text-4xl text-center my-4 font-extrabold">
             My startup's progress
           </h1>
+          <a
+            href="https://github.com/silver-times/todo"
+            target="_blank"
+            className="flex items-center justify-center cursor-pointer gap-2 -mt-5 mb-8"
+          >
+            <img className="h-6 w-6" src={GithubIcon} alt="Github code" />
+            <h1 className="text-md text-center my-4 font-extrabold">
+              GitHub Repository
+            </h1>
+          </a>
+
           <div className="flex flex-col items-center justify-center gap-y-5 p-5 ">
             <div className="flex">
               {showInput ? (
