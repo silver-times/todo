@@ -3,12 +3,13 @@ import { usePhaseContext } from "./context/phaseContext";
 import AddTodoIcon from "./assets/addTodoIcon.svg";
 import CheckIcon from "./assets/checkIcon.svg";
 import DeleteIcon from "./assets/deleteIcon.svg";
+import { Alert } from "./components/Alert";
 
 export const App = () => {
   const [showInput, setShowInput] = useState<boolean>(false);
   const [phaseInput, setPhaseInput] = useState<string>("");
   const [todoInput, setTodoInput] = useState<string>("");
-  const { phases, completedPhases, addPhase, addTodo, toggleTodo } =
+  const { phases, completedPhases, addPhase, addTodo, toggleTodo, funfact } =
     usePhaseContext();
 
   const handlePhaseInput = (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,6 +44,7 @@ export const App = () => {
     <div className="w-screen h-screen">
       <div className="container mx-auto mt-16 flex flex-col justify-center items-center w-[50%] rounded-lg shadow-lg bg-white ">
         <div className="w-full">
+          {funfact && <Alert funfact={funfact} />}
           <h1 className="text-3xl text-center my-4 font-extrabold">
             My startup's progress
           </h1>

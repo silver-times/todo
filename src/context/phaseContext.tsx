@@ -9,6 +9,7 @@ type PhaseContextType = {
   addPhase: (name: string) => void;
   addTodo: (text: string, id: number) => void;
   toggleTodo: (phaseId: number, todoId: number) => void;
+  funfact: string;
 };
 
 const PhaseContext = createContext<PhaseContextType>({
@@ -19,6 +20,7 @@ const PhaseContext = createContext<PhaseContextType>({
   addPhase: () => {},
   addTodo: () => {},
   toggleTodo: () => {},
+  funfact: "",
 });
 
 interface ChildrenProps {
@@ -28,6 +30,7 @@ interface ChildrenProps {
 export const PhaseContextProvider: React.FC<ChildrenProps> = ({ children }) => {
   const [phases, setPhases] = useState<PhaseType[]>([]);
   const [completedPhases, setCompletedPhases] = useState<number[]>([]);
+  const [funfact, setFunfact] = useState<string>("");
 
   const addPhase = (name: string) => {
     const newPhase: PhaseType = {
@@ -77,6 +80,9 @@ export const PhaseContextProvider: React.FC<ChildrenProps> = ({ children }) => {
       if (!completedPhases.includes(phaseId)) {
         setCompletedPhases((prev) => [...prev, phaseId]);
       }
+      if (newPhases.every((phase) => phase.completed)) {
+        displayFact();
+      }
     } else {
       const phaseIndexInCompleted = completedPhases.indexOf(phaseId);
       if (phaseIndexInCompleted !== -1) {
@@ -96,6 +102,14 @@ export const PhaseContextProvider: React.FC<ChildrenProps> = ({ children }) => {
     localStorage.setItem("phases", JSON.stringify(phases));
   };
 
+  const displayFact = async () => {
+    const response = await fetch(
+      "https://uselessfacts.jsph.pl/random.json?language=en"
+    );
+    const data = await response.json();
+    setFunfact(data.text);
+  };
+
   useEffect(() => {
     const localPhases = localStorage.getItem("phases");
     if (localPhases) {
@@ -113,6 +127,7 @@ export const PhaseContextProvider: React.FC<ChildrenProps> = ({ children }) => {
         addPhase,
         addTodo,
         toggleTodo,
+        funfact,
       }}
     >
       {children}

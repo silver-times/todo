@@ -11,6 +11,6 @@ export type PhaseType = {
   completed: boolean;
 };
 
-export type TodoInputsType = {
-  [key: number]: string;
+export type AlertProps = {
+  funfact: string;
 };
