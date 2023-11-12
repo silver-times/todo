@@ -1,17 +1,21 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import type { PhaseType } from "../types";
 
 type PhaseContextType = {
   phases: PhaseType[];
+  setPhases: React.Dispatch<React.SetStateAction<PhaseType[]>>;
   completedPhases: number[];
+  setCompletedPhases: React.Dispatch<React.SetStateAction<number[]>>;
   addPhase: (name: string) => void;
-  addTodo: (phaseId: number, text: string) => void;
+  addTodo: (text: string, id: number) => void;
   toggleTodo: (phaseId: number, todoId: number) => void;
 };
 
 const PhaseContext = createContext<PhaseContextType>({
   phases: [],
+  setPhases: () => {},
   completedPhases: [],
+  setCompletedPhases: () => {},
   addPhase: () => {},
   addTodo: () => {},
   toggleTodo: () => {},
@@ -32,20 +36,78 @@ export const PhaseContextProvider: React.FC<ChildrenProps> = ({ children }) => {
       todos: [],
       completed: false,
     };
-    setPhases((prevPhases) => [...prevPhases, newPhase]);
+    setPhases((prevPhases) => {
+      const newPhases = [...prevPhases, newPhase];
+      localStorage.setItem("phases", JSON.stringify(newPhases));
+      return newPhases;
+    });
   };
 
-  const addTodo = (phaseId: number, text: string) => {
-    // Implement your logic to add a todo to the specified phase
+  const addTodo = (text: string, id: number) => {
+    const newTodo = {
+      id: Math.floor(Math.random() * 1000),
+      text,
+      completed: false,
+    };
+    const phaseIndex = phases.findIndex((phase) => phase.id === id);
+    const newPhases = [...phases];
+    newPhases[phaseIndex].todos.push(newTodo);
+    setPhases(newPhases);
   };
 
   const toggleTodo = (phaseId: number, todoId: number) => {
-    // Implement your logic to toggle the completion status of a todo
+    const phaseIndex = phases.findIndex((phase) => phase.id === phaseId);
+    const newPhases = [...phases];
+
+    const todoIndex = newPhases[phaseIndex].todos.findIndex(
+      (todo) => todo.id === todoId
+    );
+
+    newPhases[phaseIndex].todos[todoIndex] = {
+      ...newPhases[phaseIndex].todos[todoIndex],
+      completed: !newPhases[phaseIndex].todos[todoIndex].completed,
+    };
+
+    newPhases[phaseIndex].completed = newPhases[phaseIndex].todos.every(
+      (todo) => todo.completed
+    );
+
+    if (newPhases[phaseIndex].completed) {
+      if (!completedPhases.includes(phaseId)) {
+        setCompletedPhases((prev) => [...prev, phaseId]);
+      }
+    } else {
+      const phaseIndexInCompleted = completedPhases.indexOf(phaseId);
+      if (phaseIndexInCompleted !== -1) {
+        const updatedCompletedPhases = completedPhases.slice(
+          0,
+          phaseIndexInCompleted
+        );
+        setCompletedPhases(updatedCompletedPhases);
+      }
+    }
+
+    setPhases(newPhases);
   };
+
+  useEffect(() => {
+    const localPhases = localStorage.getItem("phases");
+    if (localPhases) {
+      setPhases(JSON.parse(localPhases));
+    }
+  }, [completedPhases]);
 
   return (
     <PhaseContext.Provider
-      value={{ phases, completedPhases, addPhase, addTodo, toggleTodo }}
+      value={{
+        phases,
+        setPhases,
+        completedPhases,
+        setCompletedPhases,
+        addPhase,
+        addTodo,
+        toggleTodo,
+      }}
     >
       {children}
     </PhaseContext.Provider>
